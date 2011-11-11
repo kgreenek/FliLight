@@ -11,8 +11,12 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    audiothread.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    audiothread.h
 
 FORMS    += mainwindow.ui
+
+
