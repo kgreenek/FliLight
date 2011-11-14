@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT += multimedia
 
 TARGET = FliLight
 TEMPLATE = app
@@ -12,11 +13,23 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    audiothread.cpp
+    audiomanager.cpp
 
 HEADERS  += mainwindow.h \
-    audiothread.h
+    audiomanager.h
 
 FORMS    += mainwindow.ui
+
+
+
+
+
+
+
+
+
+
+
+
 
 

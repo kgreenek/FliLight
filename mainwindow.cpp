@@ -12,3 +12,8 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::newFroo(int newFroo)
+{
+    qDebug() << "MainWindow newFroo " << newFroo << " Thread MainWindow";
+}
