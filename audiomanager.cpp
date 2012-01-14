@@ -1,11 +1,11 @@
 #include "audiomanager.h"
 
-AudioManager::AudioManager(QObject *parent, QAudioFormat *format,
-                           QAudioDeviceInfo *info) : QThread(parent)
+AudioManager::AudioManager(const QAudioFormat *format, const QAudioDeviceInfo *info,
+                           QObject *parent = 0) : QThread(parent)
 {
     this->parent = parent;
-    audioFormat = *format;
-    audioDevInfo = *info;
+    audioFormat = *format;  // Deep copy
+    audioDevInfo = *info;   // Deep copy
 
     if (!audioDevInfo.isFormatSupported(audioFormat)) {
         qWarning() << "Default format not supported try to use nearest";
@@ -13,21 +13,24 @@ AudioManager::AudioManager(QObject *parent, QAudioFormat *format,
     }
 
     audioInput = new QAudioInput(audioFormat, this);
+    // audioBuf = new AudioBuffer(&audioFormat, this);
 }
 
 void AudioManager::startRecording()
 {
-    qDebug() << "AudioManager Start Recording To " << ((QApplication *) parent)->applicationDirPath();
-    outputFile.setFileName("test.raw");
-    outputFile.open(QIODevice::WriteOnly | QIODevice::Truncate);
-    audioInput->start(&outputFile);
+    qDebug() << "AudioManager Start Recording";
+    // audioBuf->open(QIODevice::WriteOnly | QIODevice::Truncate);
+    // audioInput->start((QIODevice *) audioBuf);
+
+    QIODevice *ioDevice = audioInput->start();
+
 }
 
 void AudioManager::stopRecording()
 {
     qDebug() << "AudioManager Stop Recording";
     audioInput->stop();
-    outputFile.close();
+    audioBuf->close();
 }
 
 /*

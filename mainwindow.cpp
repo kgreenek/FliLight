@@ -1,6 +1,8 @@
+//------------------------------------------------------------------------------
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+//------------------------------------------------------------------------------
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -8,12 +10,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 }
 
-MainWindow::~MainWindow()
-{
+//------------------------------------------------------------------------------
+MainWindow::~MainWindow() {
     delete ui;
 }
 
-void MainWindow::newFroo(int newFroo)
-{
+//------------------------------------------------------------------------------
+void MainWindow::newFroo(int newFroo) {
     qDebug() << "MainWindow newFroo " << newFroo << " Thread MainWindow";
 }
+
+//------------------------------------------------------------------------------

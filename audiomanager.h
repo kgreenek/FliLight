@@ -9,12 +9,14 @@
 #include <QFile>
 #include <QApplication>
 
+#include "audiobuffer.h"
+
 class AudioManager : public QThread
 {
     Q_OBJECT
 public:
-    explicit AudioManager(QObject *parent, QAudioFormat *format,
-                          QAudioDeviceInfo *info);
+    explicit AudioManager(const QAudioFormat *format, const QAudioDeviceInfo *info,
+                          QObject *parent);
     void run();
 
 private:
@@ -22,7 +24,8 @@ private:
     QAudioInput *audioInput;
     QAudioFormat audioFormat;
     QAudioDeviceInfo audioDevInfo;
-    QFile outputFile;   // For Testing.
+    AudioBuffer *audioBuf;
+    // QFile outputFile;   // For Testing.
 
 signals:
 
