@@ -70,7 +70,7 @@ public slots:
 };
 
 //------------------------------------------------------------------------------
-extern MidiBeatDetector beatDetector;
+extern MidiBeatDetector midiBeatDetector;
 
 #endif // MIDIBEATDETECTOR_H
 

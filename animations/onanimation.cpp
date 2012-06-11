@@ -1,22 +1,33 @@
 //------------------------------------------------------------------------------
-#ifndef CUBEDEFINES_H
-#define CUBEDEFINES_H
+#include "onanimation.h"
 
 //------------------------------------------------------------------------------
-#include <stdint.h>
+OnAnimation::OnAnimation(QObject *parent) :
+    FlAnimation(parent)
+{
+    memset(&cubeFrame, 0xff, sizeof(CubeFrame));
+}
 
 //------------------------------------------------------------------------------
-#define CUBE_NUM_LEDS_PER_ROW   8
-#define CUBE_NUM_BYTES_PER_ROW  1
-#define CUBE_NUM_ROWS_PER_LEVEL 8
-#define CUBE_NUM_LEVELS         8
+void OnAnimation::beatDetected() {
+    // NOP
+}
 
 //------------------------------------------------------------------------------
-typedef uint8_t CubeRow[CUBE_NUM_BYTES_PER_ROW];
-typedef CubeRow CubeLevel[CUBE_NUM_ROWS_PER_LEVEL];
-typedef CubeLevel CubeFrame[CUBE_NUM_LEVELS];
+void OnAnimation::clockDetected() {
+    // NOP
+}
 
 //------------------------------------------------------------------------------
-#endif // CUBEDEFINES_H
+void OnAnimation::run() {
+    qDebug() << "Starting OnAnimation";
+    cubeManager.registerAnimation((FlAnimation *) this);
+
+    render(&cubeFrame);
+
+    exec();
+
+    cubeManager.unRegisterAnimation((FlAnimation *) this);
+}
 
 //------------------------------------------------------------------------------

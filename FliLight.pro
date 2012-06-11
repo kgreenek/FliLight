@@ -10,7 +10,7 @@ QT += multimedia
 TARGET = FliLight
 TEMPLATE = app
 
-INCLUDEPATH = pm_common/ porttime/
+INCLUDEPATH = pm_common/ porttime/ qextserialport/src/
 
 win32 {
 	INCLUDEPATH += pm_win/
@@ -34,66 +34,44 @@ unix {
 DEFINES -= UNICODE
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    audiomanager.cpp \
-    audiobuffer.cpp \
+    mainwindow.cpp \
     pm_common/portmidi.c \
     pm_common/pmutil.c \
     porttime/porttime.c \
     porttime/ptwinmm.c \
     midibeatdetector.cpp \
     flanimation.cpp \
-    beatsnakeanimation.cpp \
-    cubemanager.cpp
+    cubemanager.cpp \
+    animations/beatsnakeanimation.cpp \
+    animations/updownsweepanimation.cpp \
+    beatdispenser.cpp \
+    animations/diamondanimation.cpp \
+    animations/strobeanimation.cpp \
+    animations/precipitationanimation.cpp \
+    animations/onanimation.cpp \
+    animations/planeanimation.cpp
 
-HEADERS  += mainwindow.h \
-    audiomanager.h \
-    audiobuffer.h \
+HEADERS += mainwindow.h \
     pm_common/pmutil.h \
     pm_common/pminternal.h \
     pm_common/portmidi.h \
     porttime/porttime.h \
     midibeatdetector.h \
     flanimation.h \
-    beatsnakeanimation.h \
     cubemanager.h \
-    cubeframe.h
+    cubeframe.h \
+    animations/beatsnakeanimation.h \
+    animations/updownsweepanimation.h \
+    beatdispenser.h \
+    animations/diamondanimation.h \
+    animations/strobeanimation.h \
+    animations/precipitationanimation.h \
+    animations/onanimation.h \
+    animations/planeanimation.h
 
-FORMS    += mainwindow.ui
+FORMS   += mainwindow.ui
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+include(qextserialport/src/qextserialport.pri)
 
 
 

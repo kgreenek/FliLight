@@ -23,7 +23,6 @@ void AudioManager::startRecording()
     // audioInput->start((QIODevice *) audioBuf);
 
     QIODevice *ioDevice = audioInput->start();
-
 }
 
 void AudioManager::stopRecording()

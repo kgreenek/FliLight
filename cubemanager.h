@@ -8,8 +8,12 @@
 #include <QList>
 #include <QDebug>
 
+#include "qextserialport.h"
 #include "cubeframe.h"
 #include "flanimation.h"
+
+#define SERIAL_START_BYTE 0x9f
+#define SERIAL_STOP_BYTE  0xae
 
 //------------------------------------------------------------------------------
 class CubeManagerAnim {
@@ -29,10 +33,12 @@ public:
     void render(const FlAnimation* flAnim, const CubeFrame *cubeFrame);
 
 private:
-    void renderOutCubeFrame(CubeFrame *outCubeFrame);
+    void renderOutCubeFrame();
 
     QList<CubeManagerAnim *> cubeMgrAnims;
     QSemaphore cubeMgrAnimsSem;
+    QextSerialPort *serialPort;
+    CubeFrame outCubeFrame;
 
 signals:
 

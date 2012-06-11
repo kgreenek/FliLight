@@ -7,29 +7,36 @@
 #include "mainwindow.h"
 #include "cubemanager.h"
 #include "midibeatdetector.h"
-#include "beatsnakeanimation.h"
+#include "beatdispenser.h"
+#include "animations/beatsnakeanimation.h"
+#include "animations/updownsweepanimation.h"
 
-#define AUDIO_SAMPLE_RATE   44100
-#define AUDIO_NUM_CHANNELS  1
-#define AUDIO_SAMPLE_SIZE   16
-#define AUDIO_CODEC         "audio/pcm"
-#define AUDIO_BYTE_ORDER    QAudioFormat::LittleEndian
-#define AUDIO_SAMPLE_TYPE   QAudioFormat::SignedInt
+#include "windows.h"
 
-MidiBeatDetector beatDetector;
+#if 0
+    #define AUDIO_SAMPLE_RATE   44100
+    #define AUDIO_NUM_CHANNELS  1
+    #define AUDIO_SAMPLE_SIZE   16
+    #define AUDIO_CODEC         "audio/pcm"
+    #define AUDIO_BYTE_ORDER    QAudioFormat::LittleEndian
+    #define AUDIO_SAMPLE_TYPE   QAudioFormat::SignedInt
+#endif
+
+//------------------------------------------------------------------------------
+MidiBeatDetector midiBeatDetector;
+BeatDispenser beatDetector;
 CubeManager cubeManager;
 
 //------------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
+    SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS);
+
     QApplication application(argc, argv);
     MainWindow mainWindow;
     mainWindow.show();
 
-    BeatSnakeAnimation beatSnakeAnim;
-    beatSnakeAnim.start();
-
-    beatDetector.start();
+    midiBeatDetector.start();
 
 #if 0
     // Initialize audio stuff.

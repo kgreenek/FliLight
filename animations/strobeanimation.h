@@ -1,36 +1,33 @@
 //------------------------------------------------------------------------------
-#ifndef FLANIMATION_H
-#define FLANIMATION_H
+#ifndef STROBEANIMATION_H
+#define STROBEANIMATION_H
 
 //------------------------------------------------------------------------------
-#include <QObject>
-#include <QThread>
-#include <QDebug>
+#include <QSemaphore>
 
+#include <math.h>
+
+#include "flanimation.h"
 #include "cubeframe.h"
+#include "beatdispenser.h"
+#include "cubemanager.h"
 
 //------------------------------------------------------------------------------
-class Point3D {
-public:
-    Point3D();
-    Point3D(int x, int y, int z);
-    int x;
-    int y;
-    int z;
-};
-
-//------------------------------------------------------------------------------
-class FlAnimation : public QThread
+class StrobeAnimation : public FlAnimation
 {
     Q_OBJECT
 public:
-    explicit FlAnimation(QObject *parent = 0);
-    void render(CubeFrame *cubeFrame);
+    StrobeAnimation(QObject *parent = 0);
     void run();
-    void stop();
+    void setStrobeSpeed(float speed);
 
 private:
-    bool running;
+    void toggleCube();
+
+    int clockCounter;
+    CubeFrame cubeFrame;
+    QSemaphore sem;
+    float strobeSpeed;
 
 public slots:
     void beatDetected();
@@ -38,6 +35,6 @@ public slots:
 };
 
 //------------------------------------------------------------------------------
-#endif // ANIMATION_H
+#endif // STROBEANIMATION_H
 
 //------------------------------------------------------------------------------

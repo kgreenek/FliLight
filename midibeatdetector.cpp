@@ -14,7 +14,7 @@ MidiBeatDetector::MidiBeatDetector(QObject *parent) :
 
 //------------------------------------------------------------------------------
 void processMidiWrapper(PtTimestamp timestamp, void *userData) {
-    beatDetector.processMidi(timestamp, userData);
+    midiBeatDetector.processMidi(timestamp, userData);
 }
 
 //------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ void MidiBeatDetector::run() {
 
     // Will the return the correct device?
     // id = Pm_GetDefaultInputDeviceID();
-    id = 2;
+    id = 1;
     info = Pm_GetDeviceInfo(id);
     if (info == NULL) {
         printf("Could not open default input device (%d).", id);

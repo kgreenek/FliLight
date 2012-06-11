@@ -5,26 +5,18 @@
 //------------------------------------------------------------------------------
 #include <QThread>
 #include <QDebug>
+#include <QSemaphore>
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-#include "midibeatdetector.h"
+#include "beatdispenser.h"
 #include "flanimation.h"
 #include "cubemanager.h"
 
 #define DEFAULT_SNAKE_LEN 6
-
-//------------------------------------------------------------------------------
-class Point3D {
-public:
-    Point3D();
-    Point3D(int x, int y, int z);
-    int x;
-    int y;
-    int z;
-};
+#define MAX_NUM_SNAKE_PTS 64
 
 //------------------------------------------------------------------------------
 class BeatSnakeAnimation : public FlAnimation
@@ -33,8 +25,12 @@ class BeatSnakeAnimation : public FlAnimation
 public:
     explicit BeatSnakeAnimation(QObject *parent = 0);    
     void run();
+    void setSnakeLen(int value);
+
+    bool coolMode;
 
 private:
+    void initSnakeAnimation();
     void moveSnake();
     void recalcDirVec();
     void renderSnake();
@@ -44,6 +40,7 @@ private:
     QList<Point3D *> snakePts;
     int snakeLen;
     int clockCounter;
+    QSemaphore sem;
 
 signals:
 

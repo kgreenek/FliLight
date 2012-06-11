@@ -1,36 +1,26 @@
 //------------------------------------------------------------------------------
-#ifndef FLANIMATION_H
-#define FLANIMATION_H
+#ifndef DIAMONDANIMATION_H
+#define DIAMONDANIMATION_H
 
 //------------------------------------------------------------------------------
-#include <QObject>
-#include <QThread>
 #include <QDebug>
 
+#include "flanimation.h"
+#include "beatdispenser.h"
 #include "cubeframe.h"
 
 //------------------------------------------------------------------------------
-class Point3D {
-public:
-    Point3D();
-    Point3D(int x, int y, int z);
-    int x;
-    int y;
-    int z;
-};
-
-//------------------------------------------------------------------------------
-class FlAnimation : public QThread
+class DiamondAnimation : public FlAnimation
 {
-    Q_OBJECT
 public:
-    explicit FlAnimation(QObject *parent = 0);
-    void render(CubeFrame *cubeFrame);
+    DiamondAnimation(QObject *parent = 0);
     void run();
-    void stop();
 
 private:
-    bool running;
+    CubeFrame cubeFrame;
+    int clockCounter;
+
+    void renderDiamond();
 
 public slots:
     void beatDetected();
@@ -38,6 +28,6 @@ public slots:
 };
 
 //------------------------------------------------------------------------------
-#endif // ANIMATION_H
+#endif // DIAMONDANIMATION_H
 
 //------------------------------------------------------------------------------
