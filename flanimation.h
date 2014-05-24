@@ -3,10 +3,7 @@
 #define FLANIMATION_H
 
 //------------------------------------------------------------------------------
-#include <QObject>
-#include <QThread>
 #include <QDebug>
-
 #include "cubeframe.h"
 
 //------------------------------------------------------------------------------
@@ -20,21 +17,33 @@ public:
 };
 
 //------------------------------------------------------------------------------
-class FlAnimation : public QThread
+class FlAnimation
 {
-    Q_OBJECT
 public:
-    explicit FlAnimation(QObject *parent = 0);
-    void render(CubeFrame *cubeFrame);
-    void run();
+    explicit FlAnimation();
+    void start();
     void stop();
 
-private:
-    bool running;
+    // Override these if you want to make changes when a beat or clock is received.
+    virtual void beatDetected();
+    virtual void clockDetected();
 
-public slots:
-    void beatDetected();
-    void clockDetected();
+    // Getters/setters
+    const CubeFrame *getCubeFrame() { return &cubeFrame; }
+    bool isDirty() { return dirty; }
+    void setDirty(bool newDirty) { dirty = newDirty; }
+    bool isRunning() { return running; }
+    void setRunning(bool newRunning);
+
+private:
+    // Called whenever the animation goes from being not-running to running.
+    virtual void init() {}
+
+    bool running; // Keeps track of whether the animation is enabled or not.
+    bool dirty;
+
+protected:
+    CubeFrame cubeFrame;
 };
 
 //------------------------------------------------------------------------------

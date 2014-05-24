@@ -1,26 +1,28 @@
 //------------------------------------------------------------------------------
-#ifndef DIAMONDANIMATION_H
-#define DIAMONDANIMATION_H
+#ifndef CUBEMANAGER_H
+#define CUBEMANAGER_H
 
 //------------------------------------------------------------------------------
 #include <QDebug>
-#include "flanimation.h"
+
+#include "qextserialport.h"
+#include "cubeframe.h"
+
+#define SERIAL_START_BYTE 0x9f
+#define SERIAL_STOP_BYTE  0xae
 
 //------------------------------------------------------------------------------
-class DiamondAnimation : public FlAnimation
+class CubeController
 {
 public:
-    DiamondAnimation();
+    explicit CubeController();
+    void render(const CubeFrame *cubeFrame);
 
 private:
-    CubeFrame cubeFrame;
-    int clockCounter;
-
-    void renderDiamond();
-
+    QextSerialPort *serialPort;
 };
 
 //------------------------------------------------------------------------------
-#endif // DIAMONDANIMATION_H
+#endif // CUBE_H
 
 //------------------------------------------------------------------------------

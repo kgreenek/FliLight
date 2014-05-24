@@ -2,10 +2,8 @@
 #include "beatsnakeanimation.h"
 
 //------------------------------------------------------------------------------
-BeatSnakeAnimation::BeatSnakeAnimation(QObject *parent) :
-    FlAnimation(parent)
+BeatSnakeAnimation::BeatSnakeAnimation()
 {
-    sem.release();
     memset(&cubeFrame, 0, sizeof(CubeFrame));  // This doesn't need to be done.
     srand(time(NULL));
     coolMode = false;
@@ -37,7 +35,6 @@ void BeatSnakeAnimation::clockDetected() {
 //------------------------------------------------------------------------------
 // Move the snake one LED forward, as defined by dirVec.
 void BeatSnakeAnimation::moveSnake() {
-    sem.acquire();
     for (int i = snakeLen - 1; i > 0; i--) {
         snakePts[i]->x = snakePts[i - 1]->x;
         snakePts[i]->y = snakePts[i - 1]->y;
@@ -49,7 +46,6 @@ void BeatSnakeAnimation::moveSnake() {
         snakePts[i]->y = snakePts[snakeLen - 1]->y;
         snakePts[i]->z = snakePts[snakeLen - 1]->z;
     }
-    sem.release();
 
 #if 0
     snakePts[0]->x += dirVec.x;
@@ -125,16 +121,13 @@ void BeatSnakeAnimation::recalcDirVec() {
 void BeatSnakeAnimation::renderSnake() {
     memset(&cubeFrame, 0, sizeof(CubeFrame));
 
-    sem.acquire();
     for (int i = 0; i < snakeLen; ++i) {
         int level = snakePts[i]->y;
         int row = snakePts[i]->z;
         cubeFrame[level][row][0] |= 1 << snakePts[i]->x;
     }
-    sem.release();
 
-    // Send our CubeFrame to the cube to be drawn.
-    render(&cubeFrame);
+    setDirty(true);
 }
 
 //------------------------------------------------------------------------------
@@ -142,13 +135,11 @@ void BeatSnakeAnimation::setSnakeLen(int value) {
     if (value < 3 || value > MAX_NUM_SNAKE_PTS)
         return;
 
-    sem.acquire();
     snakeLen = value;
-    sem.release();
 }
 
 //------------------------------------------------------------------------------
-void BeatSnakeAnimation::initSnakeAnimation() {
+void BeatSnakeAnimation::init() {
     // Initialize the snakePts.
     snakePts[0]->x = 0;
     snakePts[0]->y = 0;
@@ -167,28 +158,6 @@ void BeatSnakeAnimation::initSnakeAnimation() {
 
     moveSnake();
     renderSnake();
-}
-
-//------------------------------------------------------------------------------
-void BeatSnakeAnimation::run() {
-    qDebug() << "Starting BeatSnakeAnimation";
-    cubeManager.registerAnimation((FlAnimation *) this);
-
-    initSnakeAnimation();
-
-    QObject::connect(&beatDetector, SIGNAL(beatDetected()),
-                     this, SLOT(beatDetected()));
-    QObject::connect(&beatDetector, SIGNAL(clockDetected()),
-                     this, SLOT(clockDetected()));
-
-    exec();
-
-    QObject::disconnect(&beatDetector, SIGNAL(beatDetected()),
-                        this, SLOT(beatDetected()));
-    QObject::disconnect(&beatDetector, SIGNAL(clockDetected()),
-                        this, SLOT(clockDetected()));
-
-    cubeManager.unRegisterAnimation((FlAnimation *) this);
 }
 
 //------------------------------------------------------------------------------

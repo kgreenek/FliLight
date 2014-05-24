@@ -8,16 +8,8 @@
 #include <math.h>
 
 #include "beatdispenser.h"
-#include "cubemanager.h"
+#include "animationcontroller.h"
 
-#include "animations/updownsweepanimation.h"
-#include "animations/strobeanimation.h"
-#include "animations/beatsnakeanimation.h"
-#include "animations/precipitationanimation.h"
-#include "animations/onanimation.h"
-#include "animations/planeanimation.h"
-
-//------------------------------------------------------------------------------
 namespace Ui {
     class MainWindow;
 }
@@ -28,19 +20,14 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(BeatDispenser *beatDispenser = NULL,
+                        AnimationController *animationController = NULL);
     ~MainWindow();
 
 private:
     Ui::MainWindow *ui;
-
-    // Animations
-    StrobeAnimation strobeAnim;
-    UpDownSweepAnimation upDownSweepAnim;
-    BeatSnakeAnimation beatSnakeAnim;
-    PrecipitationAnimation precipitationAnim;
-    OnAnimation onAnim;
-    PlaneAnimation planeAnim;
+    BeatDispenser *beatDispenser;
+    AnimationController *animationController;
 
 private slots:
     void beatDetected();

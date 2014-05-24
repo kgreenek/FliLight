@@ -2,8 +2,7 @@
 #include "precipitationanimation.h"
 
 //------------------------------------------------------------------------------
-PrecipitationAnimation::PrecipitationAnimation(QObject *parent) :
-    FlAnimation(parent)
+PrecipitationAnimation::PrecipitationAnimation()
 {
     memset(&cubeFrame, 0, sizeof(CubeFrame));  // This doesn't need to be done.
     srand(time(NULL));
@@ -31,7 +30,7 @@ void PrecipitationAnimation::clockDetected() {
 }
 
 //------------------------------------------------------------------------------
-void PrecipitationAnimation::initSlowRainAnimation() {
+void PrecipitationAnimation::init() {
     randDelay = rand() % 20 + 5;
 
     // Initialize all the raindrops as not visible with pos [0, 0, 0].
@@ -89,31 +88,7 @@ void PrecipitationAnimation::renderRainDrops() {
         cubeFrame[level][row][0] |= 1 << rainDropPts[i].pos.x;
     }
 
-    // Send our local CubeFrame to the cube to be drawn.
-    render(&cubeFrame);
-}
-
-//------------------------------------------------------------------------------
-void PrecipitationAnimation::run() {
-    qDebug() << "Starting PrecipitationAnimation";
-    cubeManager.registerAnimation((FlAnimation *) this);
-
-    initSlowRainAnimation();
-
-    QObject::connect(&beatDetector, SIGNAL(beatDetected()),
-                     this, SLOT(beatDetected()));
-    QObject::connect(&beatDetector, SIGNAL(clockDetected()),
-                     this, SLOT(clockDetected()));
-
-    // Will run until the quit() function is called, and will then return.
-    exec();
-
-    QObject::disconnect(&beatDetector, SIGNAL(beatDetected()),
-                        this, SLOT(beatDetected()));
-    QObject::disconnect(&beatDetector, SIGNAL(clockDetected()),
-                        this, SLOT(clockDetected()));
-
-    cubeManager.unRegisterAnimation((FlAnimation *) this);
+    setDirty(true);
 }
 
 //------------------------------------------------------------------------------

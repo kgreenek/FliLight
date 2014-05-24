@@ -22,9 +22,10 @@ public:
     BeatDispenser(QObject *parent = 0);
     ~BeatDispenser();
     void tapButtonPressed();
-    bool useMidi;
+    void setUseMidi(bool newUseMidi) { useMidi = newUseMidi; }
 
 private:
+    bool useMidi;
     QElapsedTimer *tapButtonTimer;
 
     // When the timer expires, reset the TAP button.

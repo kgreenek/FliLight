@@ -5,11 +5,8 @@
 #include <QThread>
 
 #include "mainwindow.h"
-#include "cubemanager.h"
 #include "midibeatdetector.h"
 #include "beatdispenser.h"
-#include "animations/beatsnakeanimation.h"
-#include "animations/updownsweepanimation.h"
 
 #include "windows.h"
 
@@ -23,17 +20,21 @@
 #endif
 
 //------------------------------------------------------------------------------
+// This needs to be global, unfortunately.
 MidiBeatDetector midiBeatDetector;
-BeatDispenser beatDetector;
-CubeManager cubeManager;
 
 //------------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-    SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS);
+    // SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS);
 
     QApplication application(argc, argv);
-    MainWindow mainWindow;
+
+    BeatDispenser beatDispenser;
+    CubeController cubeController;
+    AnimationController animationController(&beatDispenser, &cubeController);
+
+    MainWindow mainWindow(&beatDispenser, &animationController);
     mainWindow.show();
 
     midiBeatDetector.start();

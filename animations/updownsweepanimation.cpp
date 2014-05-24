@@ -2,10 +2,8 @@
 #include "updownsweepanimation.h"
 
 //------------------------------------------------------------------------------
-UpDownSweepAnimation::UpDownSweepAnimation(QObject *parent) :
-    FlAnimation(parent)
+UpDownSweepAnimation::UpDownSweepAnimation()
 {
-    sem.release();
     memset(&cubeFrame, 0, sizeof(CubeFrame));  // This doesn't need to be done.
     currentLevel = 0;
     clockCounter = 0;
@@ -32,7 +30,6 @@ void UpDownSweepAnimation::switchSweepDir() {
 
 //------------------------------------------------------------------------------
 void UpDownSweepAnimation::beatDetected() {
-    // qDebug() << "UpDownSweepAnimation beat";
     if (sweepSpeed >= 1) {
         if (beatCounter % (int) sweepSpeed == 0) {
             beatCounter = 0;
@@ -55,9 +52,6 @@ void UpDownSweepAnimation::clockDetected() {
         // Update our local CubeFrame with the new level.
         renderCurrentLevel();
 
-        // Send our local CubeFrame to the cube to be drawn.
-        render(&cubeFrame);
-
         // Update currentLevel for next time.
         switch (sweepDir) {
             case SWEEP_DIR_UP:
@@ -74,37 +68,15 @@ void UpDownSweepAnimation::clockDetected() {
 
     // Update clockCounter.
     clockCounter++;
-    sem.acquire();
     clockCounter %= (int) (NUM_CLOCKS_PER_BEAT / CUBE_NUM_LEVELS * sweepSpeed);
-    sem.release();
 }
 
 //------------------------------------------------------------------------------
 // Update our local CubeFrame based on currentLevel.
 void UpDownSweepAnimation::renderCurrentLevel() {
-    memset(cubeFrame, 0, sizeof(CubeFrame));
+    memset(&cubeFrame, 0, sizeof(CubeFrame));
     memset(&cubeFrame[currentLevel], 0xFF, sizeof(CubeLevel));
-}
-
-//------------------------------------------------------------------------------
-void UpDownSweepAnimation::run() {
-    qDebug() << "Starting UpDownSweepAnimation";
-    cubeManager.registerAnimation((FlAnimation *) this);
-
-    QObject::connect(&beatDetector, SIGNAL(beatDetected()),
-                     this, SLOT(beatDetected()));
-    QObject::connect(&beatDetector, SIGNAL(clockDetected()),
-                     this, SLOT(clockDetected()));
-
-    // Will run until the quit() function is called, and will then return.
-    exec();
-
-    QObject::disconnect(&beatDetector, SIGNAL(beatDetected()),
-                        this, SLOT(beatDetected()));
-    QObject::disconnect(&beatDetector, SIGNAL(clockDetected()),
-                        this, SLOT(clockDetected()));
-
-    cubeManager.unRegisterAnimation((FlAnimation *) this);
+    setDirty(true);
 }
 
 //------------------------------------------------------------------------------

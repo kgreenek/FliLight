@@ -2,8 +2,7 @@
 #include "planeanimation.h"
 
 //------------------------------------------------------------------------------
-PlaneAnimation::PlaneAnimation(QObject *parent) :
-    FlAnimation(parent)
+PlaneAnimation::PlaneAnimation()
 {
     memset(&cubeFrame, 0, sizeof(CubeFrame));  // This doesn't need to be done.
     clockCounter = 0;
@@ -78,30 +77,7 @@ void PlaneAnimation::renderPlane() {
         }
     }
 
-    // Send our CubeFrame to the cube to be drawn.
-    render(&cubeFrame);
-}
-
-//------------------------------------------------------------------------------
-void PlaneAnimation::run() {
-    qDebug() << "Starting PlaneAnimation";
-    cubeManager.registerAnimation((FlAnimation *) this);
-
-    renderPlane();
-
-    QObject::connect(&beatDetector, SIGNAL(beatDetected()),
-                     this, SLOT(beatDetected()));
-    QObject::connect(&beatDetector, SIGNAL(clockDetected()),
-                     this, SLOT(clockDetected()));
-
-    exec();
-
-    QObject::disconnect(&beatDetector, SIGNAL(beatDetected()),
-                        this, SLOT(beatDetected()));
-    QObject::disconnect(&beatDetector, SIGNAL(clockDetected()),
-                        this, SLOT(clockDetected()));
-
-    cubeManager.unRegisterAnimation((FlAnimation *) this);
+    setDirty(true);
 }
 
 //------------------------------------------------------------------------------

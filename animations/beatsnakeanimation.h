@@ -3,17 +3,13 @@
 #define BEATSNAKEANIMATION_H
 
 //------------------------------------------------------------------------------
-#include <QThread>
 #include <QDebug>
-#include <QSemaphore>
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-#include "beatdispenser.h"
 #include "flanimation.h"
-#include "cubemanager.h"
+#include "beatdispenser.h"
 
 #define DEFAULT_SNAKE_LEN 6
 #define MAX_NUM_SNAKE_PTS 64
@@ -21,32 +17,24 @@
 //------------------------------------------------------------------------------
 class BeatSnakeAnimation : public FlAnimation
 {
-    Q_OBJECT
 public:
-    explicit BeatSnakeAnimation(QObject *parent = 0);    
-    void run();
+    explicit BeatSnakeAnimation();
     void setSnakeLen(int value);
-
-    bool coolMode;
+    void setCoolMode(bool newCoolMode) { coolMode = newCoolMode; }
+    void beatDetected();
+    void clockDetected();
 
 private:
-    void initSnakeAnimation();
+    void init();
     void moveSnake();
     void recalcDirVec();
     void renderSnake();
 
-    CubeFrame cubeFrame;
     Point3D dirVec;
     QList<Point3D *> snakePts;
     int snakeLen;
+    bool coolMode;
     int clockCounter;
-    QSemaphore sem;
-
-signals:
-
-public slots:
-    void beatDetected();
-    void clockDetected();
 };
 
 //------------------------------------------------------------------------------

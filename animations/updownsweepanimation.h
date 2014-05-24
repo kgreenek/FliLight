@@ -3,24 +3,19 @@
 #define UPDOWNSWEEPANIMATION_H
 
 //------------------------------------------------------------------------------
-#include <QSemaphore>
-
-#include "beatdispenser.h"
 #include "flanimation.h"
-#include "cubemanager.h"
+#include "beatdispenser.h"
 
 //------------------------------------------------------------------------------
 class UpDownSweepAnimation : public FlAnimation
 {
-    Q_OBJECT
 public:
-    explicit UpDownSweepAnimation(QObject *parent = 0);
-    void run();
-    QSemaphore sem;
-    float sweepSpeed;
+    explicit UpDownSweepAnimation();
+    void beatDetected();
+    void clockDetected();
+    void setSweepSpeed(float newSweepSpeed) { sweepSpeed = newSweepSpeed; }
 
 private:
-    CubeFrame cubeFrame;
     int clockCounter;
     int beatCounter;
     int currentLevel;
@@ -30,13 +25,10 @@ private:
         SWEEP_DIR_DOWN
     };
     SweepDirEnum sweepDir;
+    float sweepSpeed;
 
     void switchSweepDir();
     void renderCurrentLevel();
-
-public slots:
-    void beatDetected();
-    void clockDetected();
 };
 
 //------------------------------------------------------------------------------

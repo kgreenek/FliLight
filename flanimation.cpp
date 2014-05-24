@@ -1,6 +1,5 @@
 //------------------------------------------------------------------------------
 #include "flanimation.h"
-#include "cubemanager.h"
 
 //------------------------------------------------------------------------------
 Point3D::Point3D() {
@@ -13,17 +12,10 @@ Point3D::Point3D(int x, int y, int z) {
 }
 
 //------------------------------------------------------------------------------
-FlAnimation::FlAnimation(QObject *parent) :
-    QThread(parent)
+FlAnimation::FlAnimation()
 {
-    running = false;
-}
-
-//------------------------------------------------------------------------------
-// Override this always.
-void FlAnimation::run() {
-    qDebug() << "FlAnimation run";
-    exec();
+    setRunning(false);
+    setDirty(false);
 }
 
 //------------------------------------------------------------------------------
@@ -39,8 +31,10 @@ void FlAnimation::beatDetected() {
 }
 
 //------------------------------------------------------------------------------
-void FlAnimation::render(CubeFrame *cubeFrame) {
-    cubeManager.render(this, cubeFrame);
+void FlAnimation::setRunning(bool newRunning) {
+    running = newRunning;
+    if (running)
+        init();
 }
 
 //------------------------------------------------------------------------------

@@ -40,16 +40,17 @@ SOURCES += main.cpp\
     porttime/porttime.c \
     porttime/ptwinmm.c \
     midibeatdetector.cpp \
+    beatdispenser.cpp \
     flanimation.cpp \
-    cubemanager.cpp \
     animations/beatsnakeanimation.cpp \
     animations/updownsweepanimation.cpp \
-    beatdispenser.cpp \
     animations/diamondanimation.cpp \
     animations/strobeanimation.cpp \
     animations/precipitationanimation.cpp \
     animations/onanimation.cpp \
-    animations/planeanimation.cpp
+    animations/planeanimation.cpp \
+    animationcontroller.cpp \
+    cubecontroller.cpp
 
 HEADERS += mainwindow.h \
     pm_common/pmutil.h \
@@ -57,17 +58,18 @@ HEADERS += mainwindow.h \
     pm_common/portmidi.h \
     porttime/porttime.h \
     midibeatdetector.h \
+    beatdispenser.h \
     flanimation.h \
-    cubemanager.h \
     cubeframe.h \
     animations/beatsnakeanimation.h \
     animations/updownsweepanimation.h \
-    beatdispenser.h \
     animations/diamondanimation.h \
     animations/strobeanimation.h \
     animations/precipitationanimation.h \
     animations/onanimation.h \
-    animations/planeanimation.h
+    animations/planeanimation.h \
+    animationcontroller.h \
+    cubecontroller.h
 
 FORMS   += mainwindow.ui
 
